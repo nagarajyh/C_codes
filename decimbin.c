@@ -1,66 +1,155 @@
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include <stdlib.h>
+#define SIZE 20
+struct queue
+{
+   int data[SIZE];
+   int front, rear;
 
-#define STACK_SIZE 100
-
-struct Stack {
-    int data[STACK_SIZE];
-    int top;
 };
+void enqueue(struct queue *q, int num)
+{
+  if ((q->rear + 1) % SIZE == q->front)
+  {
+        printf("\nQueue overflow");
+    }
+    else
+    {
+        if (q->front == -1 && q->rear == -1)
+        {
+          q->front = q->rear = 0;
+        }
+        else
+        {
+          q->rear = (q->rear + 1) % SIZE;
+        }
+        q->data[q->rear] = num;
+    }
+}
+int dequeue(struct queue *q)
+{
+    int num = -1;
+    if (q->front == -1 && q->rear == -1)
+    {
+      return num;
+    }
+    else if (q->front == q->rear)
+    {
+        num = q->data[q->front];
+        q->front = q->rear = -1;
+    }
+    else
+    {
+        num = q->data[q->front];
+        q->front = (q->front + 1) % SIZE;
+    }
+  return num;
 
-void initStack(struct Stack* stack) {
-    stack->top = -1;
+}
+void display(struct queue *q)
+{
+ int i;
+      (q->front == -1 && q->rear == -1)
+
+    {
+        printf("Queue is empty");
+    }
+    else
+    {
+        i = q->front;
+
+        do
+
+        {
+
+            printf("%d ", q->data[i]);
+
+            i = (i + 1) % SIZE;
+
+        } while (i != (q->rear + 1) % SIZE);
+
+    }
+
 }
 
-void push(struct Stack* stack, int value) {
-    if (stack->top == STACK_SIZE - 1) {
-        printf("Stack Overflow!\n");
-        exit(1);
-    }
-    stack->data[++stack->top] = value;
-}
+int main()
 
-int pop(struct Stack* stack) {
-    if (stack->top == -1) {
-        printf("Stack Underflow!\n");
-        exit(1);
-    }
-    return stack->data[stack->top--];
-}
+{
 
-int isEmpty(struct Stack* stack) {
-    return stack->top == -1;
-}
+    int i, num, dq, n, eq;
 
-void decimalToBinary(int decimal) {
-    if (decimal <= 0) {
-        printf("Number should be greater than 0.\n");
-        return;
-    }
+    int enqagain[SIZE];
 
-    struct Stack binaryStack;
-    initStack(&binaryStack);
+    struct queue p, *q;
 
-    while (decimal > 0) {
-        int remainder = decimal % 2;
-        push(&binaryStack, remainder);
-        decimal /= 2;
+    q = &p;
+
+    q->front = -1;
+
+    q->rear = -1;
+
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++)
+
+    {
+
+        scanf("%d", &dq);
+
+        enqueue(q, dq);
+
     }
 
-    while (!isEmpty(&binaryStack)) {
-        printf("%d", pop(&binaryStack));
+    scanf("%d", &dq);
+
+    scanf("%d", &eq);
+
+    for (i = 0; i < eq; i++)
+
+    {
+
+        scanf("%d", &enqagain[i]);
+
     }
 
-    printf("\n");
-}
+    printf("Circular queue is: \n");
 
-int main() {
-    int decimal;
-    printf("Enter a decimal number: ");
-    scanf("%d", &decimal);
+    display(q);
 
-    decimalToBinary(decimal);
+    for (i = 0; i < dq; i++)
+
+    {
+
+        num = dequeue(q);
+
+        if (num == -1)
+
+            printf("\nQueue underflow");
+
+        else
+
+            printf("\nDequeued = %d", num);
+
+    }
+
+    printf("\nCircular queue after dequeue is: \n");
+
+    display(q);
+
+    for (i = 0; i < eq; i++)
+
+    {
+
+        enqueue(q, enqagain[i]);
+
+    }
+
+    printf("\nCircular queue after enqueue is: \n");
+
+    display(q);
 
     return 0;
-}
 
+}
